@@ -34,7 +34,7 @@ Error: ERR_PNPM_INVALID_PATCH
    > cd ../lf && npx --yes pnpm@12.3.4 install            # lf/ with pnpm 12: applies
    > ```
 
-the [`pnpm install` workflow](.github/workflows/test.yml) runs the same thing for pnpm 11.25.0 and 12.3.4 on ubuntu, windows, and macos. the pnpm 12 jobs fail on all three at the `crlf/` step; the pnpm 11 jobs pass on all three.
+the [`pnpm install` workflow](.github/workflows/test.yml) runs one job per cell of the table above on ubuntu, windows, and macos (12 jobs). the only failures are the three `pnpm 12.3.4 … for crlf` jobs.
 
 ## why this happens
 
