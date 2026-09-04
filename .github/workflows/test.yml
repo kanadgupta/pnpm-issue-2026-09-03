@@ -19,6 +19,7 @@ jobs:
         with:
           version: ${{ matrix.pnpm }}
           runtime: node@24
+          install: false
       - name: Show line endings of the patch file
         shell: bash
         # Prints 8 (one CRLF per line). Uses node rather than grep because
