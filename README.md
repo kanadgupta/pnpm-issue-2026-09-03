@@ -1,6 +1,6 @@
 # pnpm-issue-2026-09-03
 
-this repository reproduces an issue with [pnpm 12](https://github.com/pnpm/pnpm/releases/tag/v12.0.0) where `pnpm install` fails with `ERR_PNPM_INVALID_PATCH` when a `patchedDependencies` patch file has CRLF line endings. pnpm 11 applies the same patch without complaint.
+this repository reproduces an issue (https://github.com/pnpm/pnpm/issues/14557) with [pnpm 12](https://github.com/pnpm/pnpm/releases/tag/v12.0.0) where `pnpm install` fails with `ERR_PNPM_INVALID_PATCH` when a `patchedDependencies` patch file has CRLF line endings. pnpm 11 applies the same patch without complaint.
 
 ```
 Error: ERR_PNPM_INVALID_PATCH
