@@ -1,0 +1,7 @@
+patchedDependencies:
+  "is-odd@3.0.1": patches/is-odd@3.0.1.patch
+
+# Keep each install's store inside this directory. pnpm hashes patch files with
+# CRLF normalized to LF, so a store that already holds a copy patched from the
+# LF file would satisfy the CRLF install without ever parsing the CRLF patch.
+storeDir: .pnpm-store

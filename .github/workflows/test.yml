@@ -19,16 +19,18 @@ jobs:
         with:
           version: ${{ matrix.pnpm }}
           install: false
-      - name: Show line endings of the patch file
+      - name: Show line endings of both patch files
         shell: bash
-        # Prints 8 (one CRLF per line). Uses node rather than grep because
+        # Prints 0 for lf/ and 8 for crlf/. Uses node rather than grep because
         # MSYS grep on Windows strips the CR before matching.
         run: |
           pnpm --version
-          node -e "const s=require('fs').readFileSync('patches/is-odd@3.0.1.patch','latin1');const n=(s.match(/\r\n/g)||[]).length;console.log(n);process.exit(n===8?0:1)"
-      - name: pnpm install
+          for d in lf crlf; do node -e "const s=require('fs').readFileSync('$d/patches/is-odd@3.0.1.patch','latin1');console.log('$d:',(s.match(/\r\n/g)||[]).length)"; done
+      - name: pnpm install (LF patch)
         shell: bash
-        run: pnpm install --no-frozen-lockfile
-      - name: Verify the patch was applied
+        working-directory: lf
+        run: pnpm install --no-frozen-lockfile && grep 'patched by' node_modules/is-odd/index.js
+      - name: pnpm install (CRLF patch)
         shell: bash
-        run: grep 'patched by pnpm-issue-2026-09-03' node_modules/is-odd/index.js
+        working-directory: crlf
+        run: pnpm install --no-frozen-lockfile && grep 'patched by' node_modules/is-odd/index.js

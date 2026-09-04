@@ -1,0 +1,13 @@
+{
+  "name": "pnpm-issue-2026-09-03",
+  "private": true,
+  "devEngines": {
+    "runtime": {
+      "name": "node",
+      "version": "^24"
+    }
+  },
+  "dependencies": {
+    "is-odd": "3.0.1"
+  }
+}
