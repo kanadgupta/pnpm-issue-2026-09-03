@@ -1,0 +1,3 @@
+# The whole point of this repo is a CRLF patch file. Stop git from ever
+# normalizing it so the reproduction is identical on every platform.
+patches/*.patch -text

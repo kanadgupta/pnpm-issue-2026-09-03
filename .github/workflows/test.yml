@@ -1,0 +1,35 @@
+name: pnpm install
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  install:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        pnpm: ["11.25.0", "12.3.1"]
+      fail-fast: false
+    runs-on: ${{ matrix.os }}
+    name: pnpm ${{ matrix.pnpm }} on ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - uses: pnpm/action-setup@v4
+        with:
+          version: ${{ matrix.pnpm }}
+      - name: Show line endings of the patch file
+        shell: bash
+        run: |
+          pnpm --version
+          # 8 lines, each terminated with CRLF
+          grep -c $'\r' patches/is-odd@3.0.1.patch
+      - name: pnpm install
+        shell: bash
+        run: pnpm install --no-frozen-lockfile
+      - name: Verify the patch was applied
+        shell: bash
+        run: grep 'patched by pnpm-issue-2026-09-03' node_modules/is-odd/index.js
