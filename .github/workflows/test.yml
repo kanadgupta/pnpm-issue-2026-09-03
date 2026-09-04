@@ -18,7 +18,6 @@ jobs:
       - uses: pnpm/setup@v2
         with:
           version: ${{ matrix.pnpm }}
-          runtime: node@24
           install: false
       - name: Show line endings of the patch file
         shell: bash
