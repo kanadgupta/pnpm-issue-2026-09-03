@@ -19,7 +19,7 @@ the patch file in this repo, [`patches/is-odd@3.0.1.patch`](patches/is-odd@3.0.1
 2. confirm the patch file has CRLF line endings (prints `8`, one per line):
 
    ```sh
-   grep -c $'\r' patches/is-odd@3.0.1.patch
+   node -e "const s=require('fs').readFileSync('patches/is-odd@3.0.1.patch','latin1');console.log((s.match(/\r\n/g)||[]).length)"
    ```
 
 3. install the dependencies with pnpm 12 using an empty store and note how it fails with `ERR_PNPM_INVALID_PATCH`:

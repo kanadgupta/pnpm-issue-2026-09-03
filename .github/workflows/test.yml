@@ -25,6 +25,11 @@ jobs:
         shell: bash
         run: |
           pnpm --version
+          # Prints 8 (one CRLF per line). Uses node rather than grep because
+          # MSYS grep on Windows strips the CR before matching.
+          node -e "const s=require('fs').readFileSync('patches/is-odd@3.0.1.patch','latin1');const n=(s.match(/\\r\\n/g)||[]).length;console.log(n);process.exit(n===8?0:1)"
+|
+          pnpm --version
           # 8 lines, each terminated with CRLF
           grep -c $'\r' patches/is-odd@3.0.1.patch
       - name: pnpm install
