@@ -8,29 +8,28 @@ jobs:
   install:
     strategy:
       matrix:
+        newline: [lf, crlf]
         os: [ubuntu-latest, windows-latest, macos-latest]
         pnpm: ["11.25.0", "12.3.4"]
       fail-fast: false
     runs-on: ${{ matrix.os }}
-    name: pnpm ${{ matrix.pnpm }} on ${{ matrix.os }}
+    name: pnpm ${{ matrix.pnpm }} on ${{ matrix.os }} for ${{ matrix.newline }}
     steps:
       - uses: actions/checkout@v7
-      - uses: pnpm/setup@v2
+      - uses: pnpm/setup@v2.1.0
         with:
-          version: ${{ matrix.pnpm }}
           install: false
-      - name: Show line endings of both patch files
+          version: ${{ matrix.pnpm }}
+          working-directory: ${{ matrix.newline }}
+      - name: Show line endings for ${{ matrix.newline }}
         shell: bash
         # Prints 0 for lf/ and 8 for crlf/. Uses node rather than grep because
         # MSYS grep on Windows strips the CR before matching.
+        working-directory: ${{ matrix.newline }}
         run: |
           pnpm --version
-          for d in lf crlf; do node -e "const s=require('fs').readFileSync('$d/patches/is-odd@3.0.1.patch','latin1');console.log('$d:',(s.match(/\r\n/g)||[]).length)"; done
-      - name: pnpm install (LF patch)
+          node -e "const s=require('fs').readFileSync('patches/is-odd@3.0.1.patch','latin1');console.log((s.match(/\r\n/g)||[]).length)";
+      - name: pnpm install (${{ matrix.newline }} patch)
         shell: bash
-        working-directory: lf
-        run: pnpm install --no-frozen-lockfile && grep 'patched by' node_modules/is-odd/index.js
-      - name: pnpm install (CRLF patch)
-        shell: bash
-        working-directory: crlf
+        working-directory: ${{ matrix.newline }}
         run: pnpm install --no-frozen-lockfile && grep 'patched by' node_modules/is-odd/index.js
